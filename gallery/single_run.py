@@ -74,4 +74,4 @@ image = image.crop((x, y, x + display.width, y + display.height))
 # Display image.
 display.image(image)
 display.display()
-print("displaying image: %s" % img)
+print("displaying image: %s" % the_image)
