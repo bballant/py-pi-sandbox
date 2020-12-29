@@ -53,7 +53,8 @@ while True:
         else:
             scaled_width = display.width
             scaled_height = image.height * display.width // image.width
-            image = image.resize((scaled_width, scaled_height), Image.BICUBIC)
+
+        image = image.resize((scaled_width, scaled_height), Image.BICUBIC)
 
         # Crop and center the image
         x = scaled_width // 2 - display.width // 2
