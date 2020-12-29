@@ -40,6 +40,32 @@ down_button.switch_to_input()
 
 print("^^ e-ink prep: --- %s seconds ---" % (time.time() - start_time))
 
+def show_image(image_path):
+    img = Image.open(image_path)
+    # Scale the image to the smaller screen dimension
+    image_ratio = img.width / img.height
+    screen_ratio = display.width / display.height
+    if screen_ratio < image_ratio:
+        scaled_width = img.width * display.height // img.height
+        scaled_height = display.height
+    else:
+        scaled_width = display.width
+        scaled_height = img.height * display.width // img.width
+        image = img.resize((scaled_width, scaled_height), Image.BICUBIC)
+
+    # Crop and center the image
+    x = scaled_width // 2 - display.width // 2
+    y = scaled_height // 2 - display.height // 2
+    img = img.crop((x, y, x + display.width, y + display.height))
+
+    # Display image.
+    display.image(img)
+    display.display()
+    print("displaying image: %s" % image_path)
+
+show_image("images/greetings.jpg")
+time.sleep(20)
+
 images_in = glob.glob("images/*.JPG")
 seen_images = []
 with open("seen_images") as f:
@@ -53,26 +79,5 @@ print("next image: %s" % the_image)
 seen_images.append(the_image)
 with open("seen_images", "w") as f:
     f.write(repr(seen_images))
-image = Image.open(the_image)
 
-# Scale the image to the smaller screen dimension
-image_ratio = image.width / image.height
-screen_ratio = display.width / display.height
-if screen_ratio < image_ratio:
-    scaled_width = image.width * display.height // image.height
-    scaled_height = display.height
-else:
-    scaled_width = display.width
-    scaled_height = image.height * display.width // image.width
-
-image = image.resize((scaled_width, scaled_height), Image.BICUBIC)
-
-# Crop and center the image
-x = scaled_width // 2 - display.width // 2
-y = scaled_height // 2 - display.height // 2
-image = image.crop((x, y, x + display.width, y + display.height))
-
-# Display image.
-display.image(image)
-display.display()
-print("displaying image: %s" % the_image)
+show_image(the_image)
