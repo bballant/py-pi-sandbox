@@ -63,10 +63,12 @@ def show_image(image_path):
     display.display()
     print("displaying image: %s" % image_path)
 
-show_image("images/greetings.jpg")
+show_image("images/greetings.png")
 time.sleep(20)
 
-images_in = glob.glob("images/*.JPG")
+sample_images = glob.glob("images/*.JPG") # backwards compat
+local_images = glob.glob("local_images/*.png")
+images_in = sample_images + local_images
 seen_images = []
 with open("seen_images") as f:
     seen_images = ast.literal_eval(f.read())
